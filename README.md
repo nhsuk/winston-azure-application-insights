@@ -110,3 +110,15 @@ silly          | verbose (0)
 
 [0]: https://azure.microsoft.com/en-us/services/application-insights/
 [1]: https://github.com/flatiron/winston
+
+## Treating errors as Exceptions
+
+When the log level is >= `error`, the transport will also treat it as an app insights Exception. This allows you to see it clearly in the Azure Application Insights instead of having to access trace information manually and set up alerts based on the related metrics.
+
+How it works:
+
+* `winstonLogger.log('error', 'error message');` will trigger an app insights `trackException` with `Error('error message')` as argument
+
+* `winstonLogger.log('error', new Error('error message'));` will trigger an app insights `trackException` with the Error object as argument
+
+* `winstonLogger.log('error', 'error message', new Error('error message'));` will trigger an app insights `trackException` with the Error object as argument
